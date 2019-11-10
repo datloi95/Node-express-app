@@ -13,6 +13,7 @@ var promoRouter = require('./routes/promoRouter');
 var leaderRouter = require('./routes/leaderRouter');
 var favoriteRouter = require('./routes/favoriteRouter');
 const uploadRouter = require('./routes/uploadRouter');
+var commentRouter = require('./routes/commentRouter');
 
 var app = express();
 
@@ -51,6 +52,7 @@ app.use('/promotions',promoRouter);
 app.use('/leaders',leaderRouter);
 app.use('/imageUpload',uploadRouter);
 app.use('/favorites', favoriteRouter)
+app.use('/comments',commentRouter);
 // Secure traffic only
 app.all('*', (req, res, next) => {
   if (req.secure) {
@@ -63,7 +65,7 @@ app.all('*', (req, res, next) => {
 
 const mongoose = require('mongoose');
 
-const Dishes = require('./models/dishes');
+const Dishes = require('./models/dish');
 
 // const url = 'mongodb://localhost:27017/conFusion';
 const connect = mongoose.connect(url);

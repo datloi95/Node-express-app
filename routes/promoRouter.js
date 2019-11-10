@@ -4,13 +4,16 @@ const mongoose = require('mongoose');
 
 const Promotions = require('../models/promotions');
 var authenticate = require('../authenticate');
+const cors = require('./cors');
 
-const promotionRouter = express.Router();
-promotionRouter.use(bodyParser.json());
+const promoRouter = express.Router();
 
-promotionRouter.route('/')
-.get((req,res,next) => {
-    Promotions.find({})
+promoRouter.use(bodyParser.json());
+
+promoRouter.route('/')
+.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+.get(cors.cors, (req,res,next) => {
+    Promotions.find(req.query)
     .then((promotions) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -42,7 +45,7 @@ promotionRouter.route('/')
     .catch((err) => next(err));    
 });
 
-promotionRouter.route('/:promoId')
+promoRouter.route('/:promoId')
 .get((req,res,next) => {
     Promotions.findById(req.params.promoId)
     .then((promotion) => {
@@ -77,4 +80,4 @@ promotionRouter.route('/:promoId')
     .catch((err) => next(err));
 });
 
-module.exports = promotionRouter;
+module.exports = promoRouter;

@@ -3,13 +3,14 @@ const bodyParser = require('body-parser');
 
 const Leaders = require('../models/leaders');
 var authenticate = require('../authenticate');
+const cors = require('./cors');
 
 const leaderRouter = express.Router();
 leaderRouter.use(bodyParser.json());
 
 leaderRouter.route('/')
-.get((req,res,next) => {
-    Leaders.find({})
+.get(cors.cors, (req,res,next) => {
+    Leaders.find(req.query)
     .then((leaders) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
